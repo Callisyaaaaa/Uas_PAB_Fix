@@ -5,6 +5,7 @@ import 'package:uas_pab/data/user_data.dart';
 import 'package:uas_pab/models/recipe.dart';
 import 'package:uas_pab/models/user.dart';
 import 'package:uas_pab/screens/detail_screen.dart';
+import 'package:uas_pab/screens/profile_screen.dart';
 
 // Fungsi untuk mendapatkan user yang sedang login
 Future<User?> getCurrentUser() async {
@@ -17,6 +18,11 @@ Future<User?> getCurrentUser() async {
   return matchingUsers.isNotEmpty ? matchingUsers.first : null;
 }
 
+Future<void> debugPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print('Email: ${prefs.getString('email')}'); // Debugging
+}
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -25,6 +31,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    super.initState();
+    debugPreferences(); // Untuk debugging
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,72 +60,58 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     Expanded(
                       child: FutureBuilder<User?>(
-                        future: getCurrentUser(), // Ambil data user
+                        future: getCurrentUser(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Text(
-                              'Hello, ...',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            );
-                          } else if (snapshot.hasError || !snapshot.hasData) {
-                            return const Text(
-                              'Hello, Guest!',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            );
-                          } else {
-                            // Data user ditemukan
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Hello, ${snapshot.data!.name}!',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'Discover, Cook, and Enjoy Healthy Meals!',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                // Search Field
-                                TextField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Search',
-                                    prefixIcon: const Icon(Icons.search),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            );
+                          String userName = 'Guest';
+                          if (snapshot.hasData) {
+                            userName = snapshot.data!.name;
                           }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hello, $userName!',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'Discover, Cook, and Enjoy Healthy Meals!',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              // Search Field
+                              TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Search',
+                                  prefixIcon: const Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                              ),
+                            ],
+                          );
                         },
                       ),
                     ),
                     const SizedBox(width: 16), // Jarak antar header dan avatar
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman profil
-                        // Pastikan ProfilePage sudah didefinisikan
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileScreen(),
+                          ),
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -147,6 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.left,
               ),
 
               // GridView Section

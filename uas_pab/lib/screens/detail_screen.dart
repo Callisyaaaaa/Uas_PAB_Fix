@@ -1,9 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/models/recipe.dart';
+import 'package:uas_pab/screens/make_screen.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final Recipe varRecipe;
   const DetailScreen({super.key, required this.varRecipe});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool _isFavorite = false;
+
+  Future<void> _loadFavoriteStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteRecipes = prefs.getStringList('favoriteRecipes') ?? [];
+    setState(() {
+      _isFavorite = favoriteRecipes.contains(widget.varRecipe.name);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadFavoriteStatus();
+  }
+
+  Future<void> _toggleFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteRecipes = prefs.getStringList('favoriteRecipes') ?? [];
+
+    setState(() {
+      if (_isFavorite) {
+        favoriteRecipes.remove(widget.varRecipe.name);
+        _isFavorite = false;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${widget.varRecipe.name} removed from bookmark')));
+      } else {
+        favoriteRecipes.add(widget.varRecipe.name);
+        _isFavorite = true;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${widget.varRecipe.name} added to bookmark')));
+      }
+    });
+
+    await prefs.setStringList('favoriteRecipes', favoriteRecipes);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +67,7 @@ class DetailScreen extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: Image.asset(
-                        varRecipe.imageAsset,
+                        widget.varRecipe.imageAsset,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: 250,
@@ -51,12 +96,23 @@ class DetailScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     // Judul
-                    Text(
-                      varRecipe.name,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.varRecipe.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: _toggleFavorite,
+                            icon: Icon(_isFavorite
+                                ? Icons.bookmark
+                                : Icons.bookmark_border),
+                            color: _isFavorite ? Colors.green : null),
+                      ],
                     ),
                     // Info
                     Padding(
@@ -74,7 +130,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${varRecipe.cookingTime}',
+                            '${widget.varRecipe.cookingTime}',
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],
@@ -96,7 +152,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${varRecipe.calories}',
+                            '${widget.varRecipe.calories}',
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],
@@ -117,7 +173,7 @@ class DetailScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${varRecipe.servings}',
+                            '${widget.varRecipe.servings}',
                             style: const TextStyle(fontSize: 12),
                           ),
                         ],
@@ -128,7 +184,7 @@ class DetailScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     // Deskripsi
                     Text(
-                      varRecipe.description,
+                      widget.varRecipe.description,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
@@ -155,7 +211,7 @@ class DetailScreen extends StatelessWidget {
                       height: 200,
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: varRecipe.ingredients.length,
+                        itemCount: widget.varRecipe.ingredients.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4),
@@ -167,7 +223,7 @@ class DetailScreen extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    varRecipe.ingredients[index],
+                                    widget.varRecipe.ingredients[index],
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 ),
@@ -200,7 +256,7 @@ class DetailScreen extends StatelessWidget {
                       height: 200,
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: varRecipe.steps.length,
+                        itemCount: widget.varRecipe.steps.length,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(left: 8, bottom: 8),
@@ -212,7 +268,7 @@ class DetailScreen extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    varRecipe.steps[index],
+                                    widget.varRecipe.steps[index],
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 ),
@@ -223,6 +279,34 @@ class DetailScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MakeScreen(
+                                recipeName: '',
+                                steps: [],
+                              )),
+                    );
+                  },
+                  child: const Text(
+                    'Cook It Now !',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
               ),
             ],

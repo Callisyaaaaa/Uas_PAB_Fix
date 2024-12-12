@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uas_pab/screens/home_screen.dart';
+import 'package:uas_pab/screens/dashboard_screen.dart';
+//import 'package:uas_pab/screens/home_screen.dart';
 import 'package:uas_pab/screens/login_screen.dart';
 import 'package:uas_pab/screens/main_screen.dart';
 
@@ -26,10 +27,10 @@ class MainApp extends StatelessWidget {
       //title: 'Login',
       //theme:
       //ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.white)),
-      home: isLoggedIn ? const HomeScreen() : const LoginScreen(),
+      home: isLoggedIn ? const DashboardScreen() : const LoginScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const HomeScreen(),
+        //'/home': (context) => const HomeScreen(),
       },
     );
   }

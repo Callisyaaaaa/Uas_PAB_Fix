@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/screens/dashboard_screen.dart';
+import 'package:uas_pab/screens/forgot_password_screen.dart'; // Import Reset Password Screen
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // Background color hijau
         color: Colors.green.shade200,
         child: Center(
           child: Padding(
@@ -59,6 +59,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   obscureText: true,
+                ),
+                const SizedBox(height: 8),
+                // Forgot Password Text
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      // Navigasi ke halaman reset password
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 // Login Button

@@ -17,12 +17,12 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   Future<void> _loadFavoriteRecipes() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> favoriteRecipesnames =
+    List<String> favoriteRecipesNames =
         prefs.getStringList('favoriteRecipes') ?? [];
 
     setState(() {
       _favoriteRecipes = recipeList
-          .where((Recipe) => favoriteRecipesnames.contains(Recipe.name))
+          .where((recipe) => favoriteRecipesNames.contains(recipe.name))
           .toList();
     });
   }
@@ -38,6 +38,18 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bookmark'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const DashboardScreen(),
+              ),
+              (route) => false,
+            );
+          },
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -47,7 +59,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
+                  crossAxisCount: 2, // Mengubah tampilan grid menjadi 2 kolom
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
@@ -71,68 +83,40 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                       ),
                       margin: const EdgeInsets.all(6),
                       elevation: 1,
-                      child: Stack(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(16)),
-                                  child: Image.asset(
-                                    varRecipe.imageAsset,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(16)),
+                              child: Image.asset(
+                                varRecipe.imageAsset,
+                                fit: BoxFit.cover,
                               ),
-                              // Recipe Name
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, top: 8),
-                                child: Text(
-                                  varRecipe.name,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              // Calorie Count
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 16, bottom: 8),
-                                child: Text(
-                                  'Calories: ${varRecipe.calories}',
-                                  style: const TextStyle(fontSize: 10),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                          // Back Button Positioned on Top of the Image
-                          Positioned(
-                            top: 10,
-                            left: 10,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.7),
-                                shape: BoxShape.circle,
+                          // Recipe Name
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16, top: 8),
+                            child: Text(
+                              varRecipe.name,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const DashboardScreen(),
-                                    ),
-                                    (route) => false,
-                                  );
-                                },
-                                icon: const Icon(Icons.arrow_back),
-                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          // Calorie Count
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16, bottom: 8),
+                            child: Text(
+                              'Calories: ${varRecipe.calories}',
+                              style: const TextStyle(fontSize: 10),
+                              textAlign: TextAlign.left,
                             ),
                           ),
                         ],

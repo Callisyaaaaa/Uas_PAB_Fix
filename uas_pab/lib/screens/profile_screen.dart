@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -8,6 +9,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String name = "Guest";
+  String email = "example@gmail.com";
+  String password = "********";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('username') ?? "Guest";
+      email = prefs.getString('email') ?? "example@gmail.com";
+      password = prefs.getString('password') != null
+          ? '*' * prefs.getString('password')!.length
+          : "********";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +57,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     backgroundImage: AssetImage('images/regina.jpg'),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Regina George',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const Text('reginaxoxo@gmail.com'),
+                  Text(email),
                   const SizedBox(height: 10),
                   const Text(
                     '"Healthy mind, healthy body, healthy life."',
@@ -83,17 +108,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 20),
                   const Divider(),
                   const SizedBox(height: 10),
-                  _buildProfileDetail('Name', 'Regina George'),
+                  _buildProfileDetail('Name', name),
                   const Divider(),
-                  _buildProfileDetail('Email', 'reginaxoxo@gmail.com'),
+                  _buildProfileDetail('Email', email),
                   const Divider(),
-                  _buildProfileDetail('Password', '********'),
+                  _buildProfileDetail('Password', password),
                   const Divider(),
-                  _buildProfileDetail('Instagram', '@regulargina'),
+                  _buildProfileDetail('Instagram', '@yourinstagram'),
                   const Divider(),
-                  _buildProfileDetail('Facebook', 'Regina George'),
+                  _buildProfileDetail('Facebook', 'Your Facebook'),
                   const Divider(),
-                  _buildProfileDetail('TikTok', '@regina\'sdaily'),
+                  _buildProfileDetail('TikTok', '@yourtiktok'),
                 ],
               ),
             ),

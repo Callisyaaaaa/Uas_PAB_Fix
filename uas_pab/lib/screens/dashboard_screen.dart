@@ -12,16 +12,16 @@ import 'package:uas_pab/screens/upload_screen.dart';
 // Fungsi untuk mendapatkan user yang sedang login
 Future<User?> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? email = prefs.getString('email'); // Ambil email dari SharedPreferences
+  String? username = prefs.getString('username'); // Ambil username dari SharedPreferences
 
-  // Cari user berdasarkan email secara manual
-  var matchingUsers = userList.where((user) => user.email == email);
+  // Cari user berdasarkan username
+  var matchingUsers = userList.where((user) => user.name == username);
   return matchingUsers.isNotEmpty ? matchingUsers.first : null;
 }
 
 Future<void> debugPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('Email: ${prefs.getString('email')}'); // Debugging
+  print('Username: ${prefs.getString('username')}'); // Debugging
 }
 
 class DashboardScreen extends StatefulWidget {
@@ -133,7 +133,7 @@ class HomeScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         String userName = 'Guest';
                         if (snapshot.hasData) {
-                          userName = snapshot.data!.name;
+                          userName = snapshot.data!.name; // Menggunakan username
                         }
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

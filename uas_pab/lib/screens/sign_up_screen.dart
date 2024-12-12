@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uas_pab/screens/dashboard_screen.dart';
-import 'package:uas_pab/screens/forgot_password_screen.dart';
-import 'package:uas_pab/screens/sign_up_screen.dart'; // Import Sign Up Screen
+import 'package:uas_pab/screens/login_screen.dart'; // Import Login Screen
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -38,12 +36,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 1),
+                const SizedBox(height: 16),
                 // Username TextField
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Email TextField
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -61,57 +70,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   obscureText: true,
                 ),
-                const SizedBox(height: 8),
-                // Forgot Password Text
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Navigasi ke halaman reset password
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Login Button
+                const SizedBox(height: 32),
+                // Sign Up Button
                 ElevatedButton(
-                  onPressed: () async {
-                    String username = _usernameController.text;
-                    String password = _passwordController.text;
-
-                    if (username.isNotEmpty && password.isNotEmpty) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setBool('isLoggedIn', true);
-                      await prefs.setString('username', username);
-
-                      // Arahkan ke MainScreen setelah login
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DashboardScreen(),
-                        ),
-                      );
-                    } else {
-                      // Tampilkan pesan error jika username/password kosong
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Invalid Username or Password'),
-                        ),
-                      );
-                    }
+                  onPressed: () {
+                    // Navigasi ke halaman Login setelah Sign Up
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
@@ -120,26 +89,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     backgroundColor: Colors.white,
                   ),
-                  child: const Text('Login'),
+                  child: const Text('Sign Up'),
                 ),
                 const SizedBox(height: 16),
-                // Sign Up Link
+                // Log In Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account? "),
+                    const Text("Already have an account? "),
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman Sign Up
+                        // Navigasi ke halaman Login
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
+                            builder: (context) => const LoginScreen(),
                           ),
                         );
                       },
                       child: const Text(
-                        'Sign up here',
+                        'Log In',
                         style: TextStyle(
                           color: Colors.blue,
                           decoration: TextDecoration.underline,

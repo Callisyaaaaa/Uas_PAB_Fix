@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/screens/dashboard_screen.dart';
 //import 'package:uas_pab/screens/home_screen.dart';
 import 'package:uas_pab/screens/login_screen.dart';
-import 'package:uas_pab/screens/main_screen.dart';
+//import 'package:uas_pab/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

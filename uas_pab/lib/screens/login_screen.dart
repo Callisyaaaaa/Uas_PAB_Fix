@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uas_pab/screens/main_screen.dart';
+import 'package:uas_pab/screens/dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
+                          builder: (context) => const DashboardScreen(),
                         ),
                       );
                     } else {

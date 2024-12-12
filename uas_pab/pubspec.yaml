@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: 
+  image_picker: ^0.8.7+4
 
 dev_dependencies:
   flutter_test:

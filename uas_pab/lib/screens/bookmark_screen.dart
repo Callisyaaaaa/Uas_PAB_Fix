@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/data/recipe_data.dart';
 import 'package:uas_pab/models/recipe.dart';
 import 'package:uas_pab/screens/detail_screen.dart';
+import 'package:uas_pab/screens/dashboard_screen.dart'; // Pastikan path benar
 
 class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
@@ -28,7 +29,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadFavoriteRecipes();
   }
@@ -36,11 +36,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Bookmark'),
-        ),
-        body: SafeArea(
-            child: SingleChildScrollView(
+      appBar: AppBar(
+        title: const Text('Bookmark'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               GridView.builder(
@@ -71,51 +71,68 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                       ),
                       margin: const EdgeInsets.all(6),
                       elevation: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      child: Stack(
                         children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(16)),
-                              child: Image.asset(
-                                varRecipe.imageAsset,
-                                fit: BoxFit.cover,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(16)),
+                                  child: Image.asset(
+                                    varRecipe.imageAsset,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.5),
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.arrow_back),
-                            ),
-                          ),
-                          // Recipe Name
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, top: 8),
-                            child: Text(
-                              varRecipe.name,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                              // Recipe Name
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 16, top: 8),
+                                child: Text(
+                                  varRecipe.name,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
-                              textAlign: TextAlign.left,
-                            ),
+                              // Calorie Count
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 16, bottom: 8),
+                                child: Text(
+                                  'Calories: ${varRecipe.calories}',
+                                  style: const TextStyle(fontSize: 10),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ],
                           ),
-                          // Calorie Count
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, bottom: 8),
-                            child: Text(
-                              'Calories: ${varRecipe.calories}',
-                              style: const TextStyle(fontSize: 10),
-                              textAlign: TextAlign.left,
+                          // Back Button Positioned on Top of the Image
+                          Positioned(
+                            top: 10,
+                            left: 10,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.7),
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DashboardScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                },
+                                icon: const Icon(Icons.arrow_back),
+                              ),
                             ),
                           ),
                         ],
@@ -126,6 +143,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
               ),
             ],
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/models/recipe.dart';
-import 'package:uas_pab/screens/make_screen.dart';
+import 'package:uas_pab/screens/cooking_steps_screen.dart';
 
 class DetailScreen extends StatefulWidget {
   final Recipe varRecipe;
+
   const DetailScreen({super.key, required this.varRecipe});
 
   @override
@@ -24,7 +25,6 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _loadFavoriteStatus();
   }
@@ -90,7 +90,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ],
               ),
-              // Judul
+              // Judul dan Info lainnya
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -107,80 +107,16 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         ),
                         IconButton(
-                            onPressed: _toggleFavorite,
-                            icon: Icon(_isFavorite
-                                ? Icons.bookmark
-                                : Icons.bookmark_border),
-                            color: _isFavorite ? Colors.green : null),
+                          onPressed: _toggleFavorite,
+                          icon: Icon(_isFavorite
+                              ? Icons.bookmark
+                              : Icons.bookmark_border),
+                          color: _isFavorite ? Colors.green : null,
+                        ),
                       ],
                     ),
-                    // Info
-                    Padding(
-                      padding: const EdgeInsets.only(left: 1, top: 8),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.schedule, color: Colors.blue),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Cooking Time:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${widget.varRecipe.cookingTime}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 1, top: 8),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.local_fire_department,
-                              color: Colors.orange),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Calories:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${widget.varRecipe.calories}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 1, top: 8),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.restaurant, color: Colors.grey),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Servings:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${widget.varRecipe.servings}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
                     const SizedBox(height: 16),
-                    Divider(color: Colors.green, thickness: 1),
+                    const Divider(color: Colors.green, thickness: 1),
                     const SizedBox(height: 16),
                     // Deskripsi
                     Text(
@@ -188,7 +124,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
-                    Divider(color: Colors.green, thickness: 1),
+                    const Divider(color: Colors.green, thickness: 1),
                     const SizedBox(height: 16),
                   ],
                 ),
@@ -286,7 +222,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.green.shade200,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
@@ -297,14 +233,15 @@ class _DetailScreenState extends State<DetailScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MakeScreen(
-                                recipeName: '',
-                                steps: [],
-                              )),
+                        builder: (context) => CookingStepsScreen(
+                          ingredients: widget.varRecipe.ingredients,
+                          steps: widget.varRecipe.steps,
+                        ),
+                      ),
                     );
                   },
                   child: const Text(
-                    'Cook It Now !',
+                    'Cook It Now!',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),

@@ -59,7 +59,7 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Your Recipe'),
+        title: const Text('Upload Your Recipe'),
         backgroundColor: Colors.green.shade200,
       ),
       body: SingleChildScrollView(

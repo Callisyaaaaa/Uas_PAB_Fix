@@ -24,7 +24,7 @@ class VerifyEmailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Ikon surat
-              Icon(
+              const Icon(
                 Icons.email_outlined,
                 size: 100,
                 color: Colors.black,

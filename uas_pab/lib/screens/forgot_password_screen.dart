@@ -31,7 +31,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Ikon kunci
-              Icon(
+              const Icon(
                 Icons.lock_outline,
                 size: 100,
                 color: Colors.black,
@@ -153,7 +153,7 @@ class VerifyEmailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Ikon surat
-              Icon(
+              const Icon(
                 Icons.email_outlined,
                 size: 100,
                 color: Colors.black,

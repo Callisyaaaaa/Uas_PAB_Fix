@@ -48,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
+            const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(
                 'Discover a world of healthy food that will help you live your best life.',
                 textAlign: TextAlign.center,
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: ElevatedButton(
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DashboardScreen()),
+                    MaterialPageRoute(builder: (context) => const DashboardScreen()),
                   );
                 },
                 child: const Text(

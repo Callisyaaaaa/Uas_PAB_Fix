@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'after_steps_screen.dart'; 
 
 class CookingStepsScreen extends StatefulWidget {
   final List<String> ingredients;
@@ -11,7 +12,6 @@ class CookingStepsScreen extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _CookingStepsScreenState createState() => _CookingStepsScreenState();
 }
 
@@ -25,7 +25,10 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
   }
 
   void _finishCooking() {
-    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AfterStepsScreen()),
+    );
   }
 
   @override

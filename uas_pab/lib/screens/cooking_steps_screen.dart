@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'after_steps_screen.dart'; 
 
 class CookingStepsScreen extends StatefulWidget {
   final List<String> ingredients;
@@ -16,19 +15,12 @@ class CookingStepsScreen extends StatefulWidget {
 }
 
 class _CookingStepsScreenState extends State<CookingStepsScreen> {
-  List<bool> _checkedSteps = [];
+  late List<bool> _checkedSteps;
 
   @override
   void initState() {
     super.initState();
     _checkedSteps = List.generate(widget.steps.length, (index) => false);
-  }
-
-  void _finishCooking() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AfterStepsScreen()),
-    );
   }
 
   @override
@@ -41,10 +33,11 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Ingredients Section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,7 +45,7 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
                       'Ingredients',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -61,7 +54,7 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Text(
                           ingredient,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     const Divider(color: Colors.green, thickness: 1),
@@ -71,7 +64,7 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
 
               // Steps Section (with Checklist)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,12 +72,13 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
                       'Steps',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 8),
                     ListView.builder(
-                      shrinkWrap: true, 
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: widget.steps.length,
                       itemBuilder: (context, index) {
                         return Padding(
@@ -103,7 +97,7 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
                               Expanded(
                                 child: Text(
                                   widget.steps[index],
-                                  style: const TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 16),
                                 ),
                               ),
                             ],
@@ -116,9 +110,9 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
               ),
 
               // Button Finish Cooking
-              if (_checkedSteps.every((checked) => checked)) 
+              if (_checkedSteps.every((checked) => checked))
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: const EdgeInsets.all(20),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade200,
@@ -126,9 +120,32 @@ class _CookingStepsScreenState extends State<CookingStepsScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      minimumSize: const Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50), // Tombol lebar penuh
                     ),
-                    onPressed: _finishCooking,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Cooking Completed!'),
+                            content: const Text(
+                                'Congratulations, you have finished cooking. Enjoy your meal!'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  // Kembali ke menu awal
+                                  Navigator.popUntil(
+                                    context,
+                                    (route) => route.isFirst,
+                                  );
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     child: const Text(
                       'Finish Cooking!',
                       style: TextStyle(fontSize: 18, color: Colors.white),

@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/data/recipe_data.dart';
 import 'package:uas_pab/data/user_data.dart';
@@ -9,19 +9,17 @@ import 'package:uas_pab/screens/detail_screen.dart';
 import 'package:uas_pab/screens/profile_screen.dart';
 import 'package:uas_pab/screens/upload_screen.dart';
 
-// Fungsi untuk mendapatkan user yang sedang login
 Future<User?> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? username = prefs.getString('username'); // Ambil username dari SharedPreferences
+  String? username = prefs.getString('username'); 
 
-  // Cari user berdasarkan username
   var matchingUsers = userList.where((user) => user.name == username);
   return matchingUsers.isNotEmpty ? matchingUsers.first : null;
 }
 
 Future<void> debugPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('Username: ${prefs.getString('username')}'); // Debugging
+  print('Username: ${prefs.getString('username')}'); 
 }
 
 class DashboardScreen extends StatefulWidget {
@@ -133,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                       builder: (context, snapshot) {
                         String userName = 'Guest';
                         if (snapshot.hasData) {
-                          userName = snapshot.data!.name; // Menggunakan username
+                          userName = snapshot.data!.name; 
                         }
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +171,7 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(width: 16), // Jarak antar header dan avatar
+                  const SizedBox(width: 16), 
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -187,7 +185,7 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.white, // Lingkaran putih
+                          color: Colors.white,
                           width: 3,
                         ),
                         boxShadow: const [

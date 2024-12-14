@@ -99,10 +99,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
 
                     if (isAuthenticated) {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                      // Simpan email ke SharedPreferences
                       await prefs.setBool('isLoggedIn', true);
                       await prefs.setString('email', email);
+
+                      // Cari username berdasarkan email
+                      String userName = userList.firstWhere((user) => user.email == email).name;
+
+                      // Simpan username ke SharedPreferences
+                      await prefs.setString('username', userName);
+
+                      // Debugging
+                      print('Login Success: $userName');
 
                       // Navigate to DashboardScreen
                       Navigator.pushReplacement(

@@ -12,8 +12,8 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _ingredientsController = TextEditingController(); // Controller untuk Ingredients
-  final _stepsController = TextEditingController(); // Controller untuk Steps
+  final _ingredientsController = TextEditingController();
+  final _stepsController = TextEditingController();
   final _caloriesController = TextEditingController();
   File? _image;
 
@@ -33,8 +33,8 @@ class _UploadScreenState extends State<UploadScreen> {
   void _saveRecipe() {
     if (_formKey.currentState!.validate()) {
       String name = _nameController.text.trim();
-      String ingredients = _ingredientsController.text.trim(); // Mengambil data Ingredients
-      String steps = _stepsController.text.trim(); // Mengambil data Steps
+      String ingredients = _ingredientsController.text.trim();
+      String steps = _stepsController.text.trim();
       String calories = _caloriesController.text.trim();
 
       print('Nama Resep: $name');
@@ -57,10 +57,10 @@ class _UploadScreenState extends State<UploadScreen> {
           'Upload Your Recipe',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.green.shade300,
+        backgroundColor: Colors.green.shade200,
       ),
       body: Container(
-        color: Colors.grey.shade100, // Warna latar belakang
+        color: Colors.green.shade50, // Warna hijau soft untuk background
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -90,14 +90,19 @@ class _UploadScreenState extends State<UploadScreen> {
                 // Nama Resep
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Recipe Name',
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Recipe Name',
+                        prefixIcon: Icon(Icons.food_bank),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
                     ),
                   ),
                 ),
@@ -108,16 +113,21 @@ class _UploadScreenState extends State<UploadScreen> {
                 // Ingredients
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    controller: _ingredientsController, // Menggunakan controller yang berbeda
-                    decoration: const InputDecoration(
-                      labelText: 'Ingredients',
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    maxLines: 3,
+                    child: TextFormField(
+                      controller: _ingredientsController,
+                      decoration: const InputDecoration(
+                        labelText: 'Ingredients',
+                        prefixIcon: Icon(Icons.shopping_cart),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
+                      maxLines: 3,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -127,16 +137,21 @@ class _UploadScreenState extends State<UploadScreen> {
                 // Steps
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    controller: _stepsController, // Menggunakan controller yang berbeda
-                    decoration: const InputDecoration(
-                      labelText: 'Steps',
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    maxLines: 3,
+                    child: TextFormField(
+                      controller: _stepsController,
+                      decoration: const InputDecoration(
+                        labelText: 'Steps',
+                        prefixIcon: Icon(Icons.list),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
+                      maxLines: 3,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -146,16 +161,21 @@ class _UploadScreenState extends State<UploadScreen> {
                 // Kalori
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    controller: _caloriesController,
-                    decoration: const InputDecoration(
-                      labelText: 'Calories',
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    keyboardType: TextInputType.number,
+                    child: TextFormField(
+                      controller: _caloriesController,
+                      decoration: const InputDecoration(
+                        labelText: 'Calories',
+                        prefixIcon: Icon(Icons.local_fire_department),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -177,9 +197,12 @@ class _UploadScreenState extends State<UploadScreen> {
                     width: double.infinity,
                     margin: const EdgeInsets.only(top: 8),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey[200],
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade100, Colors.green.shade200], // hijau lembut untuk upload gambar
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
                     child: _image == null
                         ? const Center(
@@ -189,14 +212,14 @@ class _UploadScreenState extends State<UploadScreen> {
                                 Icon(
                                   Icons.upload_file,
                                   size: 48,
-                                  color: Colors.grey,
+                                  color: Colors.white,
                                 ),
                                 SizedBox(height: 8),
                                 Text(
                                   'Click here to upload an image',
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.grey,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
@@ -214,11 +237,13 @@ class _UploadScreenState extends State<UploadScreen> {
                 ElevatedButton(
                   onPressed: _saveRecipe,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.green.shade300,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    shadowColor: Colors.grey,
+                    elevation: 10,
                   ),
                   child: const Center(
                     child: Text(

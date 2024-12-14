@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uas_pab/screens/dashboard_screen.dart';
 import 'package:uas_pab/screens/forgot_password_screen.dart';
-import 'package:uas_pab/screens/sign_up_screen.dart'; // Import Sign Up Screen
+import 'package:uas_pab/screens/sign_up_screen.dart';
+import 'package:uas_pab/data/user_data.dart'; // Import user_data.dart
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -43,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Email',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -67,11 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      // Navigasi ke halaman reset password
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
+                          builder: (context) =>
+                              const ForgotPasswordScreen(),
                         ),
                       );
                     },
@@ -88,16 +89,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Login Button
                 ElevatedButton(
                   onPressed: () async {
-                    String username = _usernameController.text;
+                    String email = _usernameController.text;
                     String password = _passwordController.text;
 
-                    if (username.isNotEmpty && password.isNotEmpty) {
+                    // Check user credentials
+                    bool isAuthenticated = userList.any(
+                      (user) =>
+                          user.email == email && user.password == password,
+                    );
+
+                    if (isAuthenticated) {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       await prefs.setBool('isLoggedIn', true);
-                      await prefs.setString('username', username);
+                      await prefs.setString('email', email);
 
-                      // Arahkan ke MainScreen setelah login
+                      // Navigate to DashboardScreen
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -105,10 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     } else {
-                      // Tampilkan pesan error jika username/password kosong
+                      // Show error if credentials are incorrect
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Invalid Username or Password'),
+                          content: Text(
+                              'Invalid Email or Password. Please try again.'),
                         ),
                       );
                     }
@@ -130,7 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Text("Don't have an account? "),
                     GestureDetector(
                       onTap: () {
-                        // Navigasi ke halaman Sign Up
                         Navigator.push(
                           context,
                           MaterialPageRoute(

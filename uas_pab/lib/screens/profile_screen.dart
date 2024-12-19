@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'edit_profile.dart'; // Import halaman edit profile
+import 'edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -12,7 +12,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String name = "Guest";
   String email = "example@gmail.com";
-  String password = "********";
+  String password = "***********"; 
+  String instagram = "@yourinstagram";
+  String facebook = "Your Facebook";
+  String tiktok = "@yourtiktok";
 
   @override
   void initState() {
@@ -26,8 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       name = prefs.getString('username') ?? "Guest";
       email = prefs.getString('email') ?? "example@gmail.com";
       password = prefs.getString('password') != null
-          ? '*' * prefs.getString('password')!.length
-          : "********";
+          ? '*********' 
+          : "*********";
+      instagram = prefs.getString('instagram') ?? "@yourinstagram";
+      facebook = prefs.getString('facebook') ?? "Your Facebook";
+      tiktok = prefs.getString('tiktok') ?? "@yourtiktok";
     });
   }
 
@@ -86,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             MaterialPageRoute(
                               builder: (context) => const EditProfileScreen(),
                             ),
-                          ).then((_) => _loadUserData()); // Refresh data setelah kembali
+                          ).then((_) => _loadUserData()); 
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -101,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Fungsi share profil (bisa diimplementasikan nanti)
+                       
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -124,11 +130,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const Divider(),
                   _buildProfileDetail('Password', password),
                   const Divider(),
-                  _buildProfileDetail('Instagram', '@yourinstagram'),
+                  _buildProfileDetail('Instagram', instagram),
                   const Divider(),
-                  _buildProfileDetail('Facebook', 'Your Facebook'),
+                  _buildProfileDetail('Facebook', facebook),
                   const Divider(),
-                  _buildProfileDetail('TikTok', '@yourtiktok'),
+                  _buildProfileDetail('TikTok', tiktok),
                 ],
               ),
             ),
